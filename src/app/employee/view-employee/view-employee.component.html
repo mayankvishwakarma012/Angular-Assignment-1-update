@@ -1,0 +1,67 @@
+<div class="container">
+    <div class="row m-3">
+        <div class="col">
+            <h1>Employee List</h1>
+        </div>
+        <div class="col">
+
+            <button type="button" class="btn btn-success float-end" routerLink="/employee/add" (click)="this.employeeService.editModeToggle(false)">Add Employees</button>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <table class="table table-striped text-center">
+        <thead>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Contact</th>
+            <th>Gender</th>
+            <th>Skils</th>
+            <th>Action </th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let employee of getEmployees; index as i">
+                <td>{{employee.id}}</td>
+                <td>{{employee.name}}</td>
+                <td>{{employee.email}}</td>
+                <td>{{employee.contact}}</td>
+                <td>{{employee.gender}}</td>
+                <td>
+                    <ul>
+                        <li *ngFor="let skillnExp of employee.skillsAndExpriences ; index as i">
+                            {{skillnExp.skill }} {{skillnExp.exprience}}
+                        </li>
+                    </ul>
+                </td>
+                <td>
+                    <i class="fa-solid fa-pencil" (click)="editEmployee(i)" (click)="this.employeeService.editModeToggle(true)" routerLink="/employee/edit"></i>&nbsp;
+                    <i class="fa-solid fa-trash" (click)="deleteEmployee(i,employee.name)"></i>
+                </td>
+
+
+
+
+            </tr>
+        </tbody>
+
+    </table>
+</div>
+
+
+<div *ngIf="showConfirmation" class="modal">
+    <div class="modal-content border-danger">
+        <h5 class="text-danger">Are you sure you want to delete {{ employeeNameToDelete }} ?</h5>
+        <div class="row w-25">
+            <div class="col"><button class="btn btn-danger w-100" (click)="confirmDelete()">Yes</button></div>
+            <div class="col"><button class="btn btn-primary w-100" (click)="cancelDelete()">No</button></div>
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf="showSuccess" class="modal">
+    <div class="modal-content border-danger">
+        <h5 class="text-center text-danger"> {{ successMessage }}</h5>
+    </div>
+</div>

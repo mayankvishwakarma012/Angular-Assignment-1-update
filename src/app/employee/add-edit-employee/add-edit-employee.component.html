@@ -1,0 +1,90 @@
+<div class="container">
+    <form class="container" [formGroup]="addEmployee">
+        <h2 class="mt-3">{{title}}</h2>
+        <!-- row 1 -->
+        <div class="row mt-1">
+            <div class="col-md">
+                <label class="form-label" for="employeeId">Id:</label>
+                <input class="form-control" type="number" id="employeeId" name="employeeId" placeholder="Enter id" formControlName="employeeId" [class.is-invalid]="this.addEmployeeControls['employeeId'].invalid && this.addEmployeeControls['employeeId'].touched" [class.is-valid]="this.addEmployeeControls['employeeId'].valid && this.addEmployeeControls['employeeId'].touched">
+                <small class="text-danger" *ngIf="this.addEmployeeControls['employeeId'].errors?.['required'] && this.addEmployeeControls['employeeId'].touched">Employee id is required.</small>
+            </div>
+            <div class="col-md">
+                <label class="form-label" for="name">Name:</label>
+                <input class="form-control" type="text" id="name" name="name" placeholder="Enter name" formControlName="name" [class.is-invalid]="this.addEmployeeControls['name'].invalid && this.addEmployeeControls['name'].touched" [class.is-valid]="this.addEmployeeControls['name'].valid && this.addEmployeeControls['name'].touched">
+                <small class="text-danger" *ngIf="this.addEmployeeControls['name'].errors?.['required'] && this.addEmployeeControls['name'].touched">Employee name is required.</small>
+            </div>
+
+        </div>
+
+        <!-- row 2 -->
+        <div class="row mt-1 ">
+            <div class="col-md">
+                <label class="form-label" for="email">Email:</label><br>
+                <input class="form-control" type="email" id="email" name="email" placeholder="Enter email" formControlName="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" [class.is-invalid]="this.addEmployeeControls['email'].invalid && this.addEmployeeControls['email'].touched"
+                    [class.is-valid]="this.addEmployeeControls['email'].valid && this.addEmployeeControls['email'].touched">
+                <small class="text-danger" *ngIf="this.addEmployeeControls['email'].errors?.['required'] && this.addEmployeeControls['email'].touched"> Email is required.<br></small>
+                <small class="text-danger" *ngIf="this.addEmployeeControls['email'].invalid && this.addEmployeeControls['email'].touched"> Enter valid Email.</small>
+
+            </div>
+            <div class="col-md">
+                <label class="form-label" for="contact">Contact Number:</label><br>
+                <input class="form-control" type="tel" id="contact" name="contact" placeholder="Enter contact number" formControlName="contact" maxlength="10" [class.is-invalid]="this.addEmployeeControls['contact'].invalid && this.addEmployeeControls['contact'].touched"
+                    [class.is-valid]="this.addEmployeeControls['contact'].valid && this.addEmployeeControls['contact'].touched">
+                <small class="text-danger" *ngIf="this.addEmployeeControls['contact'].errors?.['required'] && this.addEmployeeControls['contact'].touched"> Contact number is required.<br></small>
+                <small class="text-danger" *ngIf="this.addEmployeeControls['contact'].errors?.['minlength'] && this.addEmployeeControls['contact'].touched"> Contact number is must be of 10 digits.</small>
+            </div>
+
+        </div>
+
+        <!-- row 3 -->
+        <div class="row mt-1">
+            <div class="col-md">
+                <div class="row mt-2" formArrayName="skillsAndExprience">
+                    <div class="col-md"><label for="skils">Skils:</label></div>
+                    <div class="col-md"><button class="btn btn-sm btn-success float-end" type="button" (click)="createSkillsAndExpriences()">Add Skill +</button>
+                    </div>
+                    <ng-container *ngFor="let skill of skillAndExprienceControls.controls; index as i">
+                        <div class="row mt-3" formGroupName="{{i}}">
+                            <div class="col-md">
+                                <input class="form-control" type="text" placeholder="Enter skill name" formControlName="skill" [class.is-invalid]="this.skillAndExprienceControls.invalid && this.skillAndExprienceControls.touched">
+                            </div>
+                            <div class="col-md">
+                                <select class="form-select" formControlName="exprience" [class.is-invalid]="this.skillAndExprienceControls.invalid && this.skillAndExprienceControls.touched">
+                                      <option selected disabled value="">Select exprience</option>
+                                      <option value="(Exp: fresher)">Fresher</option>
+                                      <option value="(Exp: 1 year)">1 year</option>
+                                      <option value="(Exp: 2 year)">2 year</option>
+                                      <option value="(Exp: 3 year)">3 year</option>
+                                      <option value="(Exp: 4 year)">4 year</option>
+                                      <option value="(Exp: 5 year)">5 year</option>
+                                    </select>
+                            </div>
+                            <ng-container *ngIf="skillAndExprienceControls.length>1">
+                                <div class="col-sm-1">
+                                    <button class="btn btn-danger" type="button" id="delete" (click)="deleteSkillsAndExprience(i)"><i class="fa-solid fa-trash"></i></button>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+
+            <div class="col-md">
+                <label for="gender">Gender:</label><br>
+                <div>
+                    <input class="form-check-input" type="radio" id="gender-male" name="gender" value="male" formControlName="gender">
+                    <label for="gender-male">Male</label>
+                    <input class="form-check-input" type="radio" id="gender-female" name="gender" value="female" formControlName="gender">
+                    <label for="gender-female">Female</label>
+
+                    <small class="text-danger" *ngIf="this.addEmployeeControls['gender'].value == '' && this.addEmployeeControls['gender'].touched"><br> select gender.</small>
+
+                </div>
+            </div>
+        </div>
+
+        <ng-container *ngIf="this.editMode == false"><input class="btn btn-primary mt-3" type="submit" value="Submit" (click)="onSubmit()" [disabled]="addEmployee.invalid"></ng-container>
+        <ng-container *ngIf="this.editMode == true"><input class="btn btn-primary mt-3" type="submit" value="Submit" (click)="onUpdate()" [disabled]="addEmployee.invalid"></ng-container>
+
+    </form>
+</div>
